@@ -56,20 +56,39 @@
       </div>
     </header>
 
-    <!-- 1. Public Landing View (Hero, About, Plans, FAQs, Inquiry) -->
+    <!-- 1. Public Landing View (Hero Split Layout with 10s Video Loop & Inquiry) -->
     <main id="view-auth" class="panel active">
-      <div class="hero-center-box">
-        <div class="portal-badge">
-          <span class="portal-badge-dot"></span> ELITE FITNESS ARENA
-        </div>
-        <h1 class="portal-headline">TRANSFORM YOUR BODY.<br>FORGE YOUR STRENGTH.</h1>
-        <p class="portal-subtext">Sonipat's premier strength, conditioning, and transformation arena. Track your active plan validity, monitor dues, and manage gym records in real-time.</p>
+      <div class="hero-split-container" style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 24px; align-items: center; max-width: 980px; margin: 24px auto 32px; padding: 0 12px;">
+        
+        <!-- Left Column: Headline & Value Prop -->
+        <div class="hero-text-col">
+          <div class="portal-badge">
+            <span class="portal-badge-dot"></span> ELITE FITNESS ARENA
+          </div>
+          <h1 class="portal-headline" style="font-size: 28px; text-align: left; margin-bottom: 10px;">TRANSFORM YOUR BODY.<br>FORGE YOUR STRENGTH.</h1>
+          <p class="portal-subtext" style="text-align: left; margin: 0 0 16px; max-width: 100%;">Sonipat's premier strength, conditioning, and transformation arena. Track your active plan validity, monitor dues, and manage gym records in real-time[cite: 17].</p>
 
-        <div class="hero-highlights-row">
-          <div class="highlight-item">⚡ Heavy-duty biomechanical strength lines</div>
-          <div class="highlight-item">🏋️ Certified coach mentoring</div>
-          <div class="highlight-item">🎯 Personalized transformation diet blueprints</div>
+          <div class="hero-highlights-row" style="justify-content: flex-start; margin-bottom: 16px;">
+            <div class="highlight-item">⚡ Heavy-duty biomechanical strength lines[cite: 17]</div>
+            <div class="highlight-item">🏋️ Certified coach mentoring[cite: 17]</div>
+          </div>
         </div>
+
+        <!-- Right Column: 10-Second Cinematic Video Loop -->
+        <div class="hero-video-col card p-0 overflow-hidden" style="border-radius: var(--radius-lg); box-shadow: 0 15px 30px -10px rgba(0,0,0,0.4);">
+          <video 
+            autoplay 
+            muted 
+            loop 
+            playsinline 
+            style="width: 100%; height: 100%; object-fit: cover; display: block; max-height: 300px;"
+          >
+            <!-- Replace 'gym-preview.mp4' with your actual video filename or path -->
+            <source src="gym-promotional-video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
       </div>
 
       <!-- Social Ribbon -->
@@ -93,23 +112,23 @@
       <section id="about-sec" class="content-section">
         <div class="section-badge">ABOUT OUR SANCTUARY</div>
         <h2 class="section-title">Built For Results, Driven By Passion</h2>
-        <p class="section-desc">At Vardhmaan Gold Fitness, training is a discipline. We combine heavy iron, precision machines, and an electric atmosphere to help you exceed your physical limits.</p>
+        <p class="section-desc">At Vardhmaan Gold Fitness, training is a discipline. We combine heavy iron, precision machines, and an electric atmosphere to help you exceed your physical limits[cite: 17].</p>
         
         <div class="grid grid-3 mt-4">
           <div class="feature-card">
             <span class="feature-icon">🏋️</span>
             <h3>Heavy Strength Floor</h3>
-            <p class="text-subtle">Olympic barbells, custom dumbbell racks up to 50kg, and dedicated deadlift/squat power cages.</p>
+            <p class="text-subtle">Olympic barbells, custom dumbbell racks up to 50kg, and dedicated deadlift/squat power cages[cite: 17].</p>
           </div>
           <div class="feature-card">
             <span class="feature-icon">🏃</span>
             <h3>Cardio & Conditioning</h3>
-            <p class="text-subtle">Commercial treadmills, stair climbers, and assault bikes geared for stamina and fat loss.</p>
+            <p class="text-subtle">Commercial treadmills, stair climbers, and assault bikes geared for stamina and fat loss[cite: 17].</p>
           </div>
           <div class="feature-card">
             <span class="feature-icon">🥗</span>
             <h3>Certified Mentorship</h3>
-            <p class="text-subtle">Tailored body recomposition, movement analysis, and nutritional guidance from certified coaches.</p>
+            <p class="text-subtle">Tailored body recomposition, movement analysis, and nutritional guidance from certified coaches[cite: 17].</p>
           </div>
         </div>
       </section>
@@ -207,7 +226,7 @@
                 <span class="faq-toggle">+</span>
               </div>
               <div class="faq-body">
-                <p class="text-subtle">Monday – Saturday: <strong>5:30 AM – 10:00 PM</strong><br>Sunday: <strong>6:00 AM – 12:00 PM</strong></p>
+                <p class="text-subtle">Monday – Saturday: <strong>5:30 AM – 10:00 PM</strong><br>Sunday: <strong>6:00 AM – 12:00 PM</strong>[cite: 17]</p>
               </div>
             </div>
 
@@ -217,7 +236,7 @@
                 <span class="faq-toggle">+</span>
               </div>
               <div class="faq-body">
-                <p class="text-subtle">Click the "Login" button at the top right to view your real-time validity card[cite: 15].</p>
+                <p class="text-subtle">Click the "Login" button at the top right to view your real-time validity card[cite: 15, 17].</p>
               </div>
             </div>
           </div>
@@ -229,7 +248,7 @@
               <span id="selected-plan-text">Plan Selected</span>
             </div>
             <h3 style="margin-bottom: 4px; font-size: 15px; font-weight: 800;">Direct Membership Inquiry</h3>
-            <p class="text-subtle" style="margin-bottom: 12px;">Fill out the details below to lock in your selected plan rate.</p>
+            <p class="text-subtle" style="margin-bottom: 12px;">Fill out the details below to lock in your selected plan rate[cite: 17].</p>
             
             <form onsubmit="handleInquirySubmit(event)">
               <div class="field-group">
