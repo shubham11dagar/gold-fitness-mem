@@ -290,7 +290,6 @@ function updateInquiryDropdownOptions(plansObj) {
       <option value="6 Month (With Treadmill)">6 Month - ₹${Number(plansObj["6 Month (With Treadmill)"] || 7500).toLocaleString()}</option>
       <option value="12 Month (With Treadmill)">12 Month - ₹${Number(plansObj["12 Month (With Treadmill)"] || 14000).toLocaleString()}</option>
     </optgroup>
-    <option value="Personal Training Inquiry">1-on-1 Personal Training</option>
   `;
 }
 
