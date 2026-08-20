@@ -3,7 +3,7 @@
    ========================================================================== */
 
 const CONFIG = {
-  apiUrl: "https://api.goldfitness.workers.dev",
+  apiUrl: "https://api.goldfitness.workers.dev/",
   pollInterval: 8000
 };
 
@@ -129,6 +129,34 @@ function closeMemberLoginModal() {
   if (input) input.value = "";
 }
 
+function openInquiryModal(planName = "") {
+  dismissMobileKeyboard();
+  const modal = document.getElementById("inquiry-modal");
+  const notice = document.getElementById("inquiry-plan-notice");
+  const planSelect = document.getElementById("inq-plan");
+  
+  if (planName) {
+    if (planSelect) planSelect.value = planName;
+    if (notice) notice.classList.remove("hidden");
+    const noticeText = document.getElementById("selected-plan-text");
+    if (noticeText) noticeText.innerText = `Selected: ${planName}`;
+  } else {
+    if (notice) notice.classList.add("hidden");
+  }
+
+  if (modal) {
+    modal.classList.remove("hidden");
+    const nameInput = document.getElementById("inq-name");
+    if (nameInput) setTimeout(() => nameInput.focus(), 150);
+  }
+}
+
+function closeInquiryModal() {
+  dismissMobileKeyboard();
+  const modal = document.getElementById("inquiry-modal");
+  if (modal) modal.classList.add("hidden");
+}
+
 // --- UTILITIES ---
 function formatDate(dateInput) {
   if (!dateInput) return "--";
@@ -160,7 +188,6 @@ function showToast(msg, isError = false) {
 }
 
 function setupTheme() {
-  // Check localStorage first. If not set, default to "dark" for first-time visitors.
   const savedTheme = localStorage.getItem("gym_theme");
   const current = savedTheme ? savedTheme : "dark";
   
@@ -223,6 +250,15 @@ function setupEvents() {
     });
   }
 
+  const inquiryModal = document.getElementById("inquiry-modal");
+  if (inquiryModal) {
+    inquiryModal.addEventListener("click", (e) => {
+      if (e.target === inquiryModal) {
+        closeInquiryModal();
+      }
+    });
+  }
+
   window.addEventListener("click", () => {
     if (State.activeView === "member") touchMemberSession();
   });
@@ -276,7 +312,6 @@ function updateInquiryDropdownOptions(plansObj) {
   const selectEl = document.getElementById("inq-plan");
   if (!selectEntryExists(selectEl)) return;
 
-  // Re-build dropdown with dynamic pricing labels
   selectEl.innerHTML = `
     <optgroup label="Without Treadmill">
       <option value="1 Month (Without Treadmill)">1 Month - ₹${Number(plansObj["1 Month (Without Treadmill)"] || 1200).toLocaleString()}</option>
@@ -286,9 +321,9 @@ function updateInquiryDropdownOptions(plansObj) {
     </optgroup>
     <optgroup label="With Treadmill">
       <option value="1 Month (With Treadmill)">1 Month - ₹${Number(plansObj["1 Month (With Treadmill)"] || 1500).toLocaleString()}</option>
-      <option value="3 Month (With Treadmill)">3 Month - ₹${Number(plansObj["3 Month (With Treadmill)"] || 4000).toLocaleString()}</option>
-      <option value="6 Month (With Treadmill)">6 Month - ₹${Number(plansObj["6 Month (With Treadmill)"] || 7500).toLocaleString()}</option>
-      <option value="12 Month (With Treadmill)">12 Month - ₹${Number(plansObj["12 Month (With Treadmill)"] || 14000).toLocaleString()}</option>
+      <option value="3 Month (With Treadmill)">3 Month - ₹4,000</option>
+      <option value="6 Month (With Treadmill)">6 Month - ₹7,500</option>
+      <option value="12 Month (With Treadmill)">12 Month - ₹14,000</option>
     </optgroup>
   `;
 }
@@ -321,29 +356,7 @@ function switchPlanCategory(mode) {
 function selectCardPlan(duration) {
   const tierKey = duration === "1 Month" ? "1m" : duration === "3 Month" ? "3m" : duration === "6 Month" ? "6m" : "12m";
   const targetLabel = PLAN_RATES[currentPlanMode][tierKey].fullLabel;
-
-  const selectEl = document.getElementById("inq-plan");
-  if (selectEl) selectEl.value = targetLabel;
-
-  const noticeEl = document.getElementById("inquiry-plan-notice");
-  const noticeText = document.getElementById("selected-plan-text");
-  if (noticeEl && noticeText) {
-    noticeText.innerText = `Selected: ${duration} Plan`;
-    noticeEl.classList.remove("hidden");
-  }
-
-  const inqCard = document.getElementById("inquiry-card");
-  if (inqCard) {
-    inqCard.scrollIntoView({ behavior: "smooth", block: "center" });
-    inqCard.classList.remove("inquiry-card-active");
-    void inqCard.offsetWidth;
-    inqCard.classList.add("inquiry-card-active");
-  }
-
-  setTimeout(() => {
-    const nameInput = document.getElementById("inq-name");
-    if (nameInput) nameInput.focus();
-  }, 450);
+  openInquiryModal(targetLabel);
 }
 
 function handleInquirySubmit(e) {
@@ -359,25 +372,16 @@ function handleInquirySubmit(e) {
     return;
   }
 
-  // --- CONFIG YOUR GYM WHATSAPP NUMBER HERE ---
-  // Replace 919876543210 with your actual gym WhatsApp number (Country code + number without '+' or spaces)
   const gymWhatsAppNumber = "919467055294"; 
-
-  // Format the professional pre-filled message
   const message = `Hi Gold Fitness Gym, my name is *${name}* (Phone: ${phone}). I am interested in joining the *${plan}*. Please contact me with further details.`;
-  
-  // URL encode the message string
   const encodedMessage = encodeURIComponent(message);
   const whatsappUrl = `https://wa.me/${gymWhatsAppNumber}?text=${encodedMessage}`;
 
   showToast("Redirecting to WhatsApp...");
   
-  // Reset form and UI notice
   e.target.reset();
-  const noticeEl = document.getElementById("inquiry-plan-notice");
-  if (noticeEl) noticeEl.classList.add("hidden");
+  closeInquiryModal();
 
-  // Open WhatsApp in a new tab/app after a brief moment
   setTimeout(() => {
     window.open(whatsappUrl, "_blank");
   }, 600);
@@ -468,7 +472,6 @@ function renderMember() {
   document.getElementById("m-member-name").innerText = member.Full_Name;
   document.getElementById("m-member-sub").innerText = `Member ID: ${member.Member_ID}`;
   
-  // Displays the full, unabrreviated original plan name purchased from the database sheet
   document.getElementById("m-plan-badge").innerText = member.Plan_Name || "Membership";
   document.getElementById("m-days-number").innerText = Math.max(0, days);
   
