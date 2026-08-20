@@ -82,10 +82,10 @@ body {
 }
 
 .app-shell {
-  max-width: 1320px; /* Increased from 1050px to fit modern laptops/desktops */
+  max-width: 1320px;
   width: 100%;
   margin: 0 auto;
-  padding: 16px 24px 40px; /* Slightly wider horizontal padding for large screens */
+  padding: 16px 24px 40px;
 }
 
 /* Header & Sticky Top-Right Controls */
@@ -141,7 +141,6 @@ body {
   color: var(--text-main);
 }
 
-/* Top-Right Header Corner Controls */
 .header-controls {
   display: flex;
   align-items: center;
@@ -202,6 +201,31 @@ body {
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
+}
+
+/* Floating Modern Contact Button at Bottom-Right Corner */
+.floating-contact-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50% !important;
+  background: var(--primary) !important;
+  color: var(--primary-text) !important;
+  border: none !important;
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.floating-contact-btn:hover {
+  transform: scale(1.08);
+  background: var(--primary-hover) !important;
 }
 
 /* Cards & Layout */
@@ -501,11 +525,7 @@ body {
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.35);
 }
 
-/* ==========================================================================
-   FIXED-SIZE MEMBERSHIP PACKAGE CARDS
-   ========================================================================== */
-
-/* Fixed Container: Always maintains a horizontal row with smooth scrolling */
+/* Plans Grid */
 .grid-4 {
   display: flex !important;
   flex-direction: row !important;
@@ -531,7 +551,6 @@ body {
   }
 }
 
-/* Plan Card: Fixed Width & Fixed Height on ALL devices */
 .plan-card {
   width: 230px !important;
   min-width: 230px !important;
@@ -616,27 +635,6 @@ body {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-/* Inquiry Card Highlight */
-.inquiry-card-active {
-  animation: inquiryPulse 1.8s ease-out;
-  border-color: var(--primary) !important;
-}
-
-@keyframes inquiryPulse {
-  0% {
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
-    transform: scale(1.02);
-  }
-  50% {
-    box-shadow: 0 0 0 12px rgba(59, 130, 246, 0.15);
-    border-color: var(--primary);
-  }
-  100% {
-    box-shadow: var(--shadow-md);
-    transform: scale(1);
-  }
 }
 
 /* FAQ Interactive Accordions */
@@ -966,38 +964,57 @@ input:focus, select:focus {
   to { transform: rotate(360deg); }
 }
 
-/* Toast Notification positioned at the bottom */
 #toast {
   position: fixed;
-  bottom: 1.5rem; /* Changed from top to bottom */
+  bottom: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
   background: var(--surface);
   color: var(--text-main);
-  padding: 0.75rem 1.25rem;
-  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  border-radius: 10px;
   border: 1px solid var(--border);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  font-size: 0.825rem;
+  font-size: 0.775rem;
   font-weight: 600;
   z-index: 999999;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  max-width: 90vw;
+  gap: 0.4rem;
+  max-width: 92vw;
   text-align: center;
 }
 
 #toast.hidden {
   opacity: 0;
-  transform: translate(-50%, 20px); /* Slides up from bottom when appearing */
+  transform: translate(-50%, 20px);
   pointer-events: none;
 }
+
 .hidden { display: none !important; }
 
-@media (max-width: 768px) {
-  .hero-split-container {
-    grid-template-columns: 1fr !important;
-  }
+/* Minimalist Modal Close Icon */
+.modal-close-icon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+  z-index: 10;
+}
+
+.modal-close-icon:hover {
+  background: var(--border);
+  color: var(--text-main);
+  transform: scale(1.08);
 }
