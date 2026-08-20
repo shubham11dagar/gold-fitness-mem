@@ -82,9 +82,10 @@ body {
 }
 
 .app-shell {
-  max-width: 1050px;
+  max-width: 1320px; /* Increased from 1050px to fit modern laptops/desktops */
+  width: 100%;
   margin: 0 auto;
-  padding: 12px 14px 40px;
+  padding: 16px 24px 40px; /* Slightly wider horizontal padding for large screens */
 }
 
 /* Header & Sticky Top-Right Controls */
@@ -993,3 +994,9 @@ input:focus, select:focus {
 }
 
 .hidden { display: none !important; }
+
+@media (max-width: 768px) {
+  .hero-split-container {
+    grid-template-columns: 1fr !important;
+  }
+}
