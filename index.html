@@ -9,6 +9,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* Removes the default clear (x) button on search inputs across browsers */
+    input[type="search"]::-webkit-search-cancel-button,
+    input[type="search"]::-webkit-search-decoration,
+    input[type="search"]::-webkit-search-results-button,
+    input[type="search"]::-webkit-search-results-decoration {
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
@@ -259,7 +268,7 @@
         <div class="field-group">
           <label for="input-member-phone">Phone Number or Member ID</label>
           <div class="input-with-icon">
-            <input type="text" id="input-member-phone" name="random_login_field" placeholder="e.g. 9876543210 or MEM-1234" maxlength="20" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text" />
+            <input type="search" id="input-member-phone" name="random_login_field" placeholder="e.g. 9876543210 or MEM-1234" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </div>
         </div>
 
@@ -298,11 +307,11 @@
         <form onsubmit="handleInquirySubmit(event)" style="margin-top: 8px;">
           <div class="field-group">
             <label for="inq-name">Your Full Name</label>
-            <input type="text" id="inq-name" name="random_user_txt_field" placeholder="e.g. Rahul Sharma" autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text" required />
+            <input type="search" id="inq-name" name="random_user_txt_field" placeholder="e.g. Rahul Sharma" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required />
           </div>
           <div class="field-group">
             <label for="inq-phone">Mobile Number</label>
-            <input type="tel" id="inq-phone" name="random_phone_field" placeholder="e.g. 9876543210" autocomplete="one-time-code" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="numeric" required />
+            <input type="tel" id="inq-phone" name="random_phone_field" placeholder="e.g. 9876543210" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="numeric" required />
           </div>
           <div class="field-group">
             <label for="inq-plan">Interested Plan</label>
