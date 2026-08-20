@@ -348,11 +348,38 @@ function selectCardPlan(duration) {
 function handleInquirySubmit(e) {
   e.preventDefault();
   dismissMobileKeyboard();
-  showToast("Inquiry submitted! Our team will contact you shortly.");
-  e.target.reset();
 
+  const name = document.getElementById("inq-name").value.trim();
+  const phone = document.getElementById("inq-phone").value.trim();
+  const plan = document.getElementById("inq-plan").value;
+
+  if (!name || !phone) {
+    showToast("Please enter your name and mobile number.", true);
+    return;
+  }
+
+  // --- CONFIG YOUR GYM WHATSAPP NUMBER HERE ---
+  // Replace 919876543210 with your actual gym WhatsApp number (Country code + number without '+' or spaces)
+  const gymWhatsAppNumber = "919467055294"; 
+
+  // Format the professional pre-filled message
+  const message = `Hi Gold Fitness Gym, my name is *${name}* (Phone: ${phone}). I am interested in joining the *${plan}*. Please contact me with further details.`;
+  
+  // URL encode the message string
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `https://wa.me/${gymWhatsAppNumber}?text=${encodedMessage}`;
+
+  showToast("Redirecting to WhatsApp...");
+  
+  // Reset form and UI notice
+  e.target.reset();
   const noticeEl = document.getElementById("inquiry-plan-notice");
   if (noticeEl) noticeEl.classList.add("hidden");
+
+  // Open WhatsApp in a new tab/app after a brief moment
+  setTimeout(() => {
+    window.open(whatsappUrl, "_blank");
+  }, 600);
 }
 
 // --- MEMBER AUTH & DATA ENGINE ---
