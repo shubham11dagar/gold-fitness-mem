@@ -259,7 +259,7 @@
         <div class="field-group">
           <label for="input-member-phone">Phone Number or Member ID</label>
           <div class="input-with-icon">
-            <input type="text" id="input-member-phone" placeholder="e.g. 9876543210 or MEM-1234" maxlength="20" autocomplete="tel" />
+            <input type="text" id="input-member-phone" placeholder="e.g. 9876543210 or MEM-1234" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </div>
         </div>
 
@@ -274,7 +274,7 @@
       </div>
     </div>
 
-<!-- 3. Popup Modal: Direct Membership Inquiry Form -->
+    <!-- 3. Popup Modal: Direct Membership Inquiry Form -->
     <div id="inquiry-modal" class="modal-backdrop hidden">
       <div class="card modal-box scrollable-modal" onclick="event.stopPropagation()" style="max-width: 440px; width: 100%; position: relative;">
         
@@ -298,11 +298,11 @@
         <form onsubmit="handleInquirySubmit(event)" style="margin-top: 8px;">
           <div class="field-group">
             <label for="inq-name">Your Full Name</label>
-            <input type="text" id="inq-name" placeholder="e.g. Rahul Sharma" required />
+            <input type="text" id="inq-name" placeholder="e.g. Rahul Sharma" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required />
           </div>
           <div class="field-group">
             <label for="inq-phone">Mobile Number</label>
-            <input type="tel" id="inq-phone" placeholder="e.g. 9876543210" required />
+            <input type="tel" id="inq-phone" placeholder="e.g. 9876543210" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" required />
           </div>
           <div class="field-group">
             <label for="inq-plan">Interested Plan</label>
