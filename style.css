@@ -404,7 +404,7 @@ body {
 .social-bar {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start !important; /* Aligns items to the left */
   flex-wrap: wrap;
   gap: 8px;
   margin: 16px 0 28px;
