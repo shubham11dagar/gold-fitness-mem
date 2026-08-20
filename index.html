@@ -56,16 +56,17 @@
       </div>
     </header>
 
-    <!-- 1. Public Landing View (Prominent Single-Play Video on Top without Box or Controls) -->
+    <!-- 1. Public Landing View (Prominent Single-Play Video on Top with Download Protection) -->
     <main id="view-auth" class="panel active">
       
-      <!-- Top Promotional Video Container (No card box, no controls, plays once) -->
+      <!-- Top Promotional Video Container (No card box, no controls, plays once, right-click disabled) -->
       <div class="hero-video-banner overflow-hidden" style="margin: 4px 0 18px; border-radius: var(--radius-lg);">
         <video 
           id="promo-hero-video"
           autoplay 
           muted 
           playsinline 
+          oncontextmenu="return false;"
           style="width: 100%; height: auto; max-height: 480px; object-fit: cover; display: block; border-radius: var(--radius-lg);"
         >
           <!-- Replace 'gym-promotional-video.mp4' with your actual video filename or path -->
