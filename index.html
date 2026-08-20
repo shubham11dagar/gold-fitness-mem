@@ -69,7 +69,6 @@
           oncontextmenu="return false;"
           style="width: 100%; height: auto; max-height: 480px; object-fit: cover; display: block; border-radius: var(--radius-lg);"
         >
-          <!-- Replace 'gym-promotional-video.mp4' with your actual video filename or path -->
           <source src="gym-promotional-video.mp4" type="video/mp4">
           Your browser does not support the video tag.
         </video>
@@ -202,81 +201,40 @@
         </div>
       </section>
 
-      <!-- 4. Customer Service Desk -->
+      <!-- 4. Customer Service Desk (FAQs Only) -->
       <section id="support-sec" class="content-section">
         <div class="section-badge">CUSTOMER SERVICE & DESK</div>
-        <h2 class="section-title">Frequently Asked Questions & Contact</h2>
+        <h2 class="section-title">Frequently Asked Questions</h2>
         
-        <div class="grid grid-hero mt-4">
-          <div class="faq-container">
-            <div class="faq-item active">
-              <div class="faq-header">
-                <h4>What is the difference in treadmill plans?</h4>
-                <span class="faq-toggle">−</span>
-              </div>
-              <div class="faq-body">
-                <p class="text-subtle">Non-treadmill plans cover our full strength floor and lifting zones. Treadmill plans include complete cardio access.</p>
-              </div>
+        <div class="faq-container mt-4" style="max-width: 800px;">
+          <div class="faq-item active">
+            <div class="faq-header">
+              <h4>What is the difference in treadmill plans?</h4>
+              <span class="faq-toggle">−</span>
             </div>
-
-            <div class="faq-item">
-              <div class="faq-header">
-                <h4>What are the gym operating hours?</h4>
-                <span class="faq-toggle">+</span>
-              </div>
-              <div class="faq-body">
-                <p class="text-subtle">Monday – Saturday: <strong>5:30 AM – 10:00 PM</strong><br>Sunday: <strong>6:00 AM – 12:00 PM</strong></p>
-              </div>
-            </div>
-
-            <div class="faq-item">
-              <div class="faq-header">
-                <h4>How do I check my validity & dues?</h4>
-                <span class="faq-toggle">+</span>
-              </div>
-              <div class="faq-body">
-                <p class="text-subtle">Click the "Login" button at the top right to view your real-time validity card.</p>
-              </div>
+            <div class="faq-body">
+              <p class="text-subtle">Non-treadmill plans cover our full strength floor and lifting zones. Treadmill plans include complete cardio access.</p>
             </div>
           </div>
 
-          <!-- Quick Mobile Inquiry Card -->
-          <div class="card p-6" id="inquiry-card">
-            <div id="inquiry-plan-notice" class="portal-badge hidden" style="margin-bottom: 8px; color: var(--emerald-text); border-color: var(--emerald-border); background: var(--emerald);">
-              <span class="portal-badge-dot" style="background-color: var(--emerald-text); box-shadow: 0 0 6px var(--emerald-text);"></span>
-              <span id="selected-plan-text">Plan Selected</span>
+          <div class="faq-item">
+            <div class="faq-header">
+              <h4>What are the gym operating hours?</h4>
+              <span class="faq-toggle">+</span>
             </div>
-            <h3 style="margin-bottom: 4px; font-size: 15px; font-weight: 800;">Direct Membership Inquiry</h3>
-            <p class="text-subtle" style="margin-bottom: 12px;">Fill out the details below to lock in your selected plan rate.</p>
-            
-            <form onsubmit="handleInquirySubmit(event)">
-              <div class="field-group">
-                <label for="inq-name">Your Full Name</label>
-                <input type="text" id="inq-name" placeholder="e.g. Rahul Sharma" required />
-              </div>
-              <div class="field-group">
-                <label for="inq-phone">Mobile Number</label>
-                <input type="tel" id="inq-phone" placeholder="e.g. 9876543210" required />
-              </div>
-              <div class="field-group">
-                <label for="inq-plan">Interested Plan</label>
-                <select id="inq-plan">
-                  <optgroup label="Without Treadmill">
-                    <option value="1 Month (Without Treadmill)">1 Month - ₹1,200</option>
-                    <option value="3 Month (Without Treadmill)">3 Month - ₹3,000</option>
-                    <option value="6 Month (Without Treadmill)">6 Month - ₹5,500</option>
-                    <option value="12 Month (Without Treadmill)">12 Month - ₹10,000</option>
-                  </optgroup>
-                  <optgroup label="With Treadmill">
-                    <option value="1 Month (With Treadmill)">1 Month - ₹1,500</option>
-                    <option value="3 Month (With Treadmill)">3 Month - ₹4,000</option>
-                    <option value="6 Month (With Treadmill)">6 Month - ₹7,500</option>
-                    <option value="12 Month (With Treadmill)">12 Month - ₹14,000</option>
-                  </optgroup>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary btn-glow mt-4">Submit & Chat on WhatsApp</button>
-            </form>
+            <div class="faq-body">
+              <p class="text-subtle">Monday – Saturday: <strong>5:30 AM – 10:00 PM</strong><br>Sunday: <strong>6:00 AM – 12:00 PM</strong></p>
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <div class="faq-header">
+              <h4>How do I check my validity & dues?</h4>
+              <span class="faq-toggle">+</span>
+            </div>
+            <div class="faq-body">
+              <p class="text-subtle">Click the "Login" button at the top right to view your real-time validity card.</p>
+            </div>
           </div>
         </div>
       </section>
@@ -316,7 +274,66 @@
       </div>
     </div>
 
-    <!-- 3. Dedicated Member Dashboard (Only shows when logged in) -->
+<!-- 3. Popup Modal: Direct Membership Inquiry Form -->
+    <div id="inquiry-modal" class="modal-backdrop hidden">
+      <div class="card modal-box scrollable-modal" onclick="event.stopPropagation()" style="max-width: 440px; width: 100%; position: relative;">
+        
+        <!-- Minimalist Top-Right Close Button -->
+        <button type="button" class="modal-close-icon" onclick="closeInquiryModal()" aria-label="Close Modal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <div style="margin-bottom: 12px; padding-right: 32px;">
+          <div id="inquiry-plan-notice" class="portal-badge hidden" style="margin-bottom: 6px; color: var(--emerald-text); border-color: var(--emerald-border); background: var(--emerald);">
+            <span class="portal-badge-dot" style="background-color: var(--emerald-text); box-shadow: 0 0 6px var(--emerald-text);"></span>
+            <span id="selected-plan-text">Plan Selected</span>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 2px;">Direct Membership Inquiry</h3>
+          <p class="text-subtle" style="font-size: 12px;">Fill out the details below to lock in your selected plan rate.</p>
+        </div>
+        
+        <form onsubmit="handleInquirySubmit(event)" style="margin-top: 8px;">
+          <div class="field-group">
+            <label for="inq-name">Your Full Name</label>
+            <input type="text" id="inq-name" placeholder="e.g. Rahul Sharma" required />
+          </div>
+          <div class="field-group">
+            <label for="inq-phone">Mobile Number</label>
+            <input type="tel" id="inq-phone" placeholder="e.g. 9876543210" required />
+          </div>
+          <div class="field-group">
+            <label for="inq-plan">Interested Plan</label>
+            <select id="inq-plan">
+              <optgroup label="Without Treadmill">
+                <option value="1 Month (Without Treadmill)">1 Month - ₹1,200</option>
+                <option value="3 Month (Without Treadmill)">3 Month - ₹3,000</option>
+                <option value="6 Month (Without Treadmill)">6 Month - ₹5,500</option>
+                <option value="12 Month (Without Treadmill)">12 Month - ₹10,000</option>
+              </optgroup>
+              <optgroup label="With Treadmill">
+                <option value="1 Month (With Treadmill)">1 Month - ₹1,500</option>
+                <option value="3 Month (With Treadmill)">3 Month - ₹4,000</option>
+                <option value="6 Month (With Treadmill)">6 Month - ₹7,500</option>
+                <option value="12 Month (With Treadmill)">12 Month - ₹14,000</option>
+              </optgroup>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-glow mt-4" style="width: 100%;">Submit & Chat on WhatsApp</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Floating Modern Contact Button at Bottom-Right Corner -->
+    <button type="button" class="floating-contact-btn icon-button modern-icon-btn" onclick="openInquiryModal()" title="Direct Inquiry" aria-label="Direct Inquiry">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+      </svg>
+    </button>
+
+    <!-- 4. Dedicated Member Dashboard (Only shows when logged in) -->
     <main id="view-member" class="panel hidden">
       <div class="section-title-row">
         <div>
