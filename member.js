@@ -106,6 +106,7 @@ function handleMemberLogout() {
   clearMemberSession();
   const loginInput = document.getElementById("input-member-phone");
   if (loginInput) loginInput.value = "";
+  setMemberLoginError("");
   switchView("auth", true);
   showToast("Logged out successfully");
 }
@@ -113,6 +114,7 @@ function handleMemberLogout() {
 // --- POPUP MODAL ACTIONS ---
 function openMemberLoginModal() {
   dismissMobileKeyboard();
+  setMemberLoginError("");
   const modal = document.getElementById("member-login-modal");
   if (modal) {
     modal.classList.remove("hidden");
@@ -123,6 +125,7 @@ function openMemberLoginModal() {
 
 function closeMemberLoginModal() {
   dismissMobileKeyboard();
+  setMemberLoginError("");
   const modal = document.getElementById("member-login-modal");
   if (modal) modal.classList.add("hidden");
   const input = document.getElementById("input-member-phone");
@@ -220,12 +223,12 @@ function switchView(viewName, skipFetch = false) {
     if (syncPill) syncPill.classList.add("hidden");
     if (headerNav) headerNav.classList.remove("hidden");
     if (topLoginBtn) topLoginBtn.classList.remove("hidden");
-    if (floatingInquiryBtn) floatingInquiryBtn.classList.remove("hidden"); // Show button on landing page
+    if (floatingInquiryBtn) floatingInquiryBtn.classList.remove("hidden");
   } else {
     if (syncPill) syncPill.classList.remove("hidden");
     if (headerNav) headerNav.classList.add("hidden");
     if (topLoginBtn) topLoginBtn.classList.add("hidden");
-    if (floatingInquiryBtn) floatingInquiryBtn.classList.add("hidden"); // Hide button when logged in
+    if (floatingInquiryBtn) floatingInquiryBtn.classList.add("hidden");
 
     if (!skipFetch) {
       fetchData();
@@ -390,11 +393,24 @@ function handleInquirySubmit(e) {
   }, 600);
 }
 
+// --- HELPER TO DISPLAY IN-LINE LOGIN ERROR ---
+function setMemberLoginError(message) {
+  const errorEl = document.getElementById("member-login-error");
+  if (errorEl) {
+    errorEl.innerText = message || "";
+  }
+}
+
 // --- MEMBER AUTH & DATA ENGINE ---
 async function handleMemberLogin() {
   dismissMobileKeyboard();
+  setMemberLoginError("");
+
   const inputVal = document.getElementById("input-member-phone").value.trim();
-  if (!inputVal) return showToast("Please enter Phone Number or Member ID", true);
+  if (!inputVal) {
+    setMemberLoginError("Please enter Phone Number or Member ID.");
+    return;
+  }
 
   showSpinner("Verifying gym membership...");
   await fetchData(true);
@@ -405,7 +421,7 @@ async function handleMemberLogin() {
   );
 
   if (!member) {
-    showToast("User is not registered as a gym member.", true);
+    setMemberLoginError("User is not registered as a gym member.");
     return;
   }
 
