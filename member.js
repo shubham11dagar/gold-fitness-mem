@@ -214,15 +214,18 @@ function switchView(viewName, skipFetch = false) {
   const syncPill = document.getElementById("sync-pill");
   const headerNav = document.getElementById("landing-header-nav");
   const topLoginBtn = document.getElementById("top-login-btn");
+  const floatingInquiryBtn = document.getElementById("floating-inquiry-btn");
 
   if (viewName === "auth") {
     if (syncPill) syncPill.classList.add("hidden");
     if (headerNav) headerNav.classList.remove("hidden");
     if (topLoginBtn) topLoginBtn.classList.remove("hidden");
+    if (floatingInquiryBtn) floatingInquiryBtn.classList.remove("hidden"); // Show button on landing page
   } else {
     if (syncPill) syncPill.classList.remove("hidden");
     if (headerNav) headerNav.classList.add("hidden");
     if (topLoginBtn) topLoginBtn.classList.add("hidden");
+    if (floatingInquiryBtn) floatingInquiryBtn.classList.add("hidden"); // Hide button when logged in
 
     if (!skipFetch) {
       fetchData();
