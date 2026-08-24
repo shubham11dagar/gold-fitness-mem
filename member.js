@@ -52,9 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFaqAccordion();
   startSync();
   
-  // Trigger aesthetic price loading state while fetching from Google Sheet
+  // Show the inline text/dot loader on pricing cards without a blocking overlay spinner
   showPriceLoadingState(true);
-  fetchData(true);
+  fetchData(true); // Runs silently in the background
 
   const isMemberLoggedIn = checkAutoLogin();
   if (!isMemberLoggedIn) {
@@ -172,18 +172,6 @@ function formatDate(dateInput) {
   return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-function showSpinner(text = "Syncing with Gold Fitness...") {
-  const spinner = document.getElementById("loading-spinner");
-  const spinnerText = document.getElementById("spinner-text");
-  if (spinnerText) spinnerText.innerText = text;
-  if (spinner) spinner.classList.remove("hidden");
-}
-
-function hideSpinner() {
-  const spinner = document.getElementById("loading-spinner");
-  if (spinner) spinner.classList.add("hidden");
-}
-
 // Aesthetic Price Loading State Engine
 function showPriceLoadingState(isLoading) {
   ["1m", "3m", "6m", "12m"].forEach(tier => {
@@ -249,7 +237,7 @@ function switchView(viewName, skipFetch = false) {
     if (floatingInquiryBtn) floatingInquiryBtn.classList.add("hidden");
 
     if (!skipFetch) {
-      fetchData();
+      fetchData(true);
     } else {
       if (viewName === "member") renderMember();
     }
@@ -431,9 +419,8 @@ async function handleMemberLogin() {
     return;
   }
 
-  showSpinner("Verifying gym membership...");
+  // Fetch data silently without showing any blocking overlay spinner
   await fetchData(true);
-  hideSpinner();
 
   const member = State.members.find(m => 
     String(m.Member_ID).trim().toLowerCase() === inputVal.toLowerCase()
@@ -477,7 +464,6 @@ async function fetchData(silent = false) {
   if (!CONFIG.apiUrl || CONFIG.apiUrl.includes("YOUR_GOOGLE_APPS_SCRIPT")) return;
 
   State.isFetching = true;
-  if (!silent) showSpinner("Loading latest gym records...");
 
   try {
     const res = await fetch(`${CONFIG.apiUrl}?action=getAllData`);
@@ -495,7 +481,6 @@ async function fetchData(silent = false) {
     if (!silent) showToast("Connection failed. Check network.", true);
   } finally {
     State.isFetching = false;
-    if (!silent) hideSpinner();
   }
 }
 
