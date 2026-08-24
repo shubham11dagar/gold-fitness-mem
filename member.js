@@ -12,6 +12,7 @@ const SESSION_CONFIG = {
   inactivityLimitMs: 15 * 24 * 60 * 60 * 1000 // 15 Days
 };
 
+// --- GYM PRICING DATA ENGINE (Dynamic Default Fallbacks) ---
 let PLAN_RATES = {
   without: {
     "1m": { price: "₹1,200", sub: "/mo", label: "✕ Treadmill Excluded", fullLabel: "1 Month (Without Treadmill)" },
@@ -51,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFaqAccordion();
   startSync();
   
-  // Show aesthetic price loading state initially
+  // Trigger aesthetic price loading state while fetching from Google Sheet
   showPriceLoadingState(true);
   fetchData(true);
 
@@ -113,6 +114,7 @@ function handleMemberLogout() {
   showToast("Logged out successfully");
 }
 
+// --- POPUP MODAL ACTIONS ---
 function openMemberLoginModal() {
   dismissMobileKeyboard();
   setMemberLoginError("");
@@ -161,6 +163,7 @@ function closeInquiryModal() {
   if (modal) modal.classList.add("hidden");
 }
 
+// --- UTILITIES ---
 function formatDate(dateInput) {
   if (!dateInput) return "--";
   const d = new Date(dateInput);
@@ -181,7 +184,7 @@ function hideSpinner() {
   if (spinner) spinner.classList.add("hidden");
 }
 
-// Aesthetic Price Loading Indicator State
+// Aesthetic Price Loading State Engine
 function showPriceLoadingState(isLoading) {
   ["1m", "3m", "6m", "12m"].forEach(tier => {
     const priceEl = document.getElementById(`price-${tier}`);
@@ -409,6 +412,7 @@ function handleInquirySubmit(e) {
   }, 600);
 }
 
+// --- HELPER TO DISPLAY IN-LINE LOGIN ERROR ---
 function setMemberLoginError(message) {
   const errorEl = document.getElementById("member-login-error");
   if (errorEl) {
@@ -416,6 +420,7 @@ function setMemberLoginError(message) {
   }
 }
 
+// --- MEMBER AUTH & DATA ENGINE ---
 async function handleMemberLogin() {
   dismissMobileKeyboard();
   setMemberLoginError("");
