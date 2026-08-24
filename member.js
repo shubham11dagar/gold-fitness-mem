@@ -47,7 +47,7 @@ function dismissMobileKeyboard() {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   setupTheme();
   setupEvents();
   setupFaqAccordion();
@@ -55,10 +55,12 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Apply "Loading..." text placeholder immediately on startup across both tabs
   showPriceLoadingState(true);
-  fetchData(true); // Runs silently in the background
 
-  const isMemberLoggedIn = checkAutoLogin();
+  // Check auto-login asynchronously
+  const isMemberLoggedIn = await checkAutoLogin();
   if (!isMemberLoggedIn) {
+    // If not logged in, fetch silently in the background for the pricing cards
+    fetchData(true);
     switchView("auth", true);
   }
 });
@@ -85,7 +87,8 @@ function clearMemberSession() {
   State.activeIdentifier = null;
 }
 
-function checkAutoLogin() {
+// Auto-Login sequence now properly triggers the spinner if restoring an active session
+async function checkAutoLogin() {
   const raw = localStorage.getItem(SESSION_CONFIG.storageKey);
   if (!raw) return false;
   try {
@@ -97,7 +100,16 @@ function checkAutoLogin() {
     }
     touchMemberSession();
     State.activeIdentifier = session.identifier;
-    switchView("member", false);
+
+    // ---> SPINNER TRIGGERED HERE FOR RETURNING LOGGED-IN USERS <---
+    showSpinner("Restoring session & loading data...");
+    
+    await fetchData(true);
+    
+    // ---> SPINNER HIDDEN AFTER DASHBOARD DATA LOADS <---
+    hideSpinner();
+
+    switchView("member", true);
     return true;
   } catch (e) {
     clearMemberSession();
@@ -173,7 +185,6 @@ function formatDate(dateInput) {
   return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-// ---> SPINNER FUNCTIONS RESTORED HERE <---
 function showSpinner(text = "Syncing with Gold Fitness...") {
   const spinner = document.getElementById("loading-spinner");
   const spinnerText = document.getElementById("spinner-text");
@@ -418,7 +429,6 @@ function handleInquirySubmit(e) {
   }, 600);
 }
 
-// --- HELPER TO DISPLAY IN-LINE LOGIN ERROR ---
 function setMemberLoginError(message) {
   const errorEl = document.getElementById("member-login-error");
   if (errorEl) {
@@ -437,12 +447,10 @@ async function handleMemberLogin() {
     return;
   }
 
-  // ---> SPINNER TRIGGERED HERE BEFORE FETCHING MEMBER DATA <---
   showSpinner("Verifying gym membership...");
 
   await fetchData(true);
 
-  // ---> SPINNER HIDDEN HERE AFTER FETCH IS DONE <---
   hideSpinner();
 
   const member = State.members.find(m => 
