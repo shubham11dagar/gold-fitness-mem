@@ -9,7 +9,7 @@ const CONFIG = {
 
 const SESSION_CONFIG = {
   storageKey: "gym_member_session",
-  inactivityLimitMs: 15 * 24 * 60 * 60 * 1000 // 15 Days
+  inactivityLimitMs: 5 * 24 * 60 * 60 * 1000 // 5 Days
 };
 
 // --- GYM PRICING DATA ENGINE (Dynamic Default Fallbacks) ---
@@ -428,7 +428,14 @@ async function handleMemberLogin() {
     return;
   }
 
+  // 1. Show the spinner overlay with a custom message
+  showSpinner("Verifying gym membership...");
+
+  // 2. Wait for the cloud fetch to finish
   await fetchData(true);
+
+  // 3. Hide the spinner once the data is loaded
+  hideSpinner();
 
   const member = State.members.find(m => 
     String(m.Member_ID).trim().toLowerCase() === inputVal.toLowerCase()
