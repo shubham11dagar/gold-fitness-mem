@@ -378,7 +378,7 @@ function handleInquirySubmit(e) {
     return;
   }
 
-  const gymWhatsAppNumber = "919467055294"; 
+  const gymWhatsAppNumber = "919996688788"; 
   const message = `Hi Gold Fitness Gym, my name is *${name}* (Phone: ${phone}). I am interested in joining the *${plan}*. Please contact me with further details.`;
   const encodedMessage = encodeURIComponent(message);
   const whatsappUrl = `https://wa.me/${gymWhatsAppNumber}?text=${encodedMessage}`;
