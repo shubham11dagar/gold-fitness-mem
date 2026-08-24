@@ -173,6 +173,19 @@ function formatDate(dateInput) {
   return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 
+// ---> SPINNER FUNCTIONS RESTORED HERE <---
+function showSpinner(text = "Syncing with Gold Fitness...") {
+  const spinner = document.getElementById("loading-spinner");
+  const spinnerText = document.getElementById("spinner-text");
+  if (spinnerText) spinnerText.innerText = text;
+  if (spinner) spinner.classList.remove("hidden");
+}
+
+function hideSpinner() {
+  const spinner = document.getElementById("loading-spinner");
+  if (spinner) spinner.classList.add("hidden");
+}
+
 // Applies "Loading..." placeholder text to all pricing cards across tabs
 function showPriceLoadingState(isLoading) {
   if (isPricingLoaded && !isLoading) return;
@@ -326,7 +339,7 @@ function updatePlanRatesFromCloud(plansObj) {
 
 function updateInquiryDropdownOptions(plansObj) {
   const selectEl = document.getElementById("inq-plan");
-  if (!selectEntryExists(selectEl)) return;
+  if (!selectEl) return;
 
   selectEl.innerHTML = `
     <optgroup label="Without Treadmill">
@@ -342,10 +355,6 @@ function updateInquiryDropdownOptions(plansObj) {
       <option value="12 Month (With Treadmill)">12 Month - ₹14,000</option>
     </optgroup>
   `;
-}
-
-function selectEntryExists(el) {
-  return el !== null;
 }
 
 function switchPlanCategory(mode) {
@@ -428,13 +437,12 @@ async function handleMemberLogin() {
     return;
   }
 
-  // Trigger the spinner before fetching the specific member data
+  // ---> SPINNER TRIGGERED HERE BEFORE FETCHING MEMBER DATA <---
   showSpinner("Verifying gym membership...");
 
-  // Fetch the data silently from Google Sheets
   await fetchData(true);
 
-  // Hide the spinner once the data finishes loading
+  // ---> SPINNER HIDDEN HERE AFTER FETCH IS DONE <---
   hideSpinner();
 
   const member = State.members.find(m => 
