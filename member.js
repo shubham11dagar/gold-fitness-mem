@@ -15,20 +15,21 @@ const SESSION_CONFIG = {
 // --- GYM PRICING DATA ENGINE (Dynamic Default Fallbacks) ---
 let PLAN_RATES = {
   without: {
-    "1m": { price: "₹1,200", sub: "/mo", label: "✕ Treadmill Excluded", fullLabel: "1 Month (Without Treadmill)" },
-    "3m": { price: "₹3,000", sub: "/3 mo", label: "✕ Treadmill Excluded", fullLabel: "3 Month (Without Treadmill)" },
-    "6m": { price: "₹5,500", sub: "/6 mo", label: "✕ Treadmill Excluded", fullLabel: "6 Month (Without Treadmill)" },
-    "12m": { price: "₹10,000", sub: "/yr", label: "✕ Treadmill Excluded", fullLabel: "12 Month (Without Treadmill)" }
+    "1m": { price: "Loading...", sub: "", label: "✕ Treadmill Excluded", fullLabel: "1 Month (Without Treadmill)" },
+    "3m": { price: "Loading...", sub: "", label: "✕ Treadmill Excluded", fullLabel: "3 Month (Without Treadmill)" },
+    "6m": { price: "Loading...", sub: "", label: "✕ Treadmill Excluded", fullLabel: "6 Month (Without Treadmill)" },
+    "12m": { price: "Loading...", sub: "", label: "✕ Treadmill Excluded", fullLabel: "12 Month (Without Treadmill)" }
   },
   with: {
-    "1m": { price: "₹1,500", sub: "/mo", label: "✓ Includes Treadmill & Cardio", fullLabel: "1 Month (With Treadmill)" },
-    "3m": { price: "₹4,000", sub: "/3 mo", label: "✓ Includes Treadmill & Cardio", fullLabel: "3 Month (With Treadmill)" },
-    "6m": { price: "₹7,500", sub: "/6 mo", label: "✓ Includes Treadmill & Cardio", fullLabel: "6 Month (With Treadmill)" },
-    "12m": { price: "₹14,000", sub: "/yr", label: "✓ Includes Treadmill & Cardio", fullLabel: "12 Month (With Treadmill)" }
+    "1m": { price: "Loading...", sub: "", label: "✓ Includes Treadmill & Cardio", fullLabel: "1 Month (With Treadmill)" },
+    "3m": { price: "Loading...", sub: "", label: "✓ Includes Treadmill & Cardio", fullLabel: "3 Month (With Treadmill)" },
+    "6m": { price: "Loading...", sub: "", label: "✓ Includes Treadmill & Cardio", fullLabel: "6 Month (With Treadmill)" },
+    "12m": { price: "Loading...", sub: "", label: "✓ Includes Treadmill & Cardio", fullLabel: "12 Month (With Treadmill)" }
   }
 };
 
 let currentPlanMode = "without";
+let isPricingLoaded = false;
 
 const State = {
   theme: localStorage.getItem("gym_theme") || "system",
@@ -52,7 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFaqAccordion();
   startSync();
   
-  // Apply "Loading..." text placeholder immediately on startup
+  // Apply "Loading..." text placeholder immediately on startup across both tabs
   showPriceLoadingState(true);
   fetchData(true); // Runs silently in the background
 
@@ -174,6 +175,7 @@ function formatDate(dateInput) {
 
 // Applies "Loading..." placeholder text to all pricing cards across tabs
 function showPriceLoadingState(isLoading) {
+  if (isPricingLoaded && !isLoading) return;
   ["1m", "3m", "6m", "12m"].forEach(tier => {
     const priceEl = document.getElementById(`price-${tier}`);
     if (!priceEl) return;
@@ -299,6 +301,7 @@ function setupFaqAccordion() {
 function updatePlanRatesFromCloud(plansObj) {
   if (!plansObj) return;
 
+  isPricingLoaded = true;
   const getP = (key, fallback) => plansObj[key] !== undefined ? `₹${Number(plansObj[key]).toLocaleString()}` : fallback;
 
   PLAN_RATES = {
@@ -358,7 +361,13 @@ function switchPlanCategory(mode) {
     const priceEl = document.getElementById(`price-${tier}`);
     const perkEl = document.getElementById(`perk-treadmill-${tier}`);
     
-    if (priceEl) priceEl.innerHTML = `${rates[tier].price}<span>${rates[tier].sub}</span>`;
+    if (priceEl) {
+      if (!isPricingLoaded) {
+        priceEl.innerHTML = `<span style="font-size:14px; color:var(--text-muted); font-weight:700;">Loading...</span>`;
+      } else {
+        priceEl.innerHTML = `${rates[tier].price}<span>${rates[tier].sub}</span>`;
+      }
+    }
     if (perkEl) {
       perkEl.innerText = rates[tier].label;
       perkEl.style.color = isWith ? "var(--emerald-text)" : "var(--text-muted)";
@@ -476,6 +485,7 @@ async function fetchData(silent = false) {
 
     if (State.activeView === "member") renderMember();
   } catch (err) {
+    isPricingLoaded = true;
     showPriceLoadingState(false);
     if (!silent) showToast("Connection failed. Check network.", true);
   } finally {
