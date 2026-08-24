@@ -12,7 +12,6 @@ const SESSION_CONFIG = {
   inactivityLimitMs: 15 * 24 * 60 * 60 * 1000 // 15 Days
 };
 
-// --- GYM PRICING DATA ENGINE (Dynamic Default Fallbacks) ---
 let PLAN_RATES = {
   without: {
     "1m": { price: "₹1,200", sub: "/mo", label: "✕ Treadmill Excluded", fullLabel: "1 Month (Without Treadmill)" },
@@ -51,7 +50,10 @@ document.addEventListener("DOMContentLoaded", () => {
   setupEvents();
   setupFaqAccordion();
   startSync();
-  fetchData(true); // Fetch initial prices right away
+  
+  // Show aesthetic price loading state initially
+  showPriceLoadingState(true);
+  fetchData(true);
 
   const isMemberLoggedIn = checkAutoLogin();
   if (!isMemberLoggedIn) {
@@ -111,7 +113,6 @@ function handleMemberLogout() {
   showToast("Logged out successfully");
 }
 
-// --- POPUP MODAL ACTIONS ---
 function openMemberLoginModal() {
   dismissMobileKeyboard();
   setMemberLoginError("");
@@ -160,7 +161,6 @@ function closeInquiryModal() {
   if (modal) modal.classList.add("hidden");
 }
 
-// --- UTILITIES ---
 function formatDate(dateInput) {
   if (!dateInput) return "--";
   const d = new Date(dateInput);
@@ -179,6 +179,21 @@ function showSpinner(text = "Syncing with Gold Fitness...") {
 function hideSpinner() {
   const spinner = document.getElementById("loading-spinner");
   if (spinner) spinner.classList.add("hidden");
+}
+
+// Aesthetic Price Loading Indicator State
+function showPriceLoadingState(isLoading) {
+  ["1m", "3m", "6m", "12m"].forEach(tier => {
+    const priceEl = document.getElementById(`price-${tier}`);
+    if (!priceEl) return;
+    
+    if (isLoading) {
+      priceEl.classList.add("price-loading");
+      priceEl.innerHTML = `<span style="font-size:12px; color:var(--primary); font-weight:700;">Loading...</span>`;
+    } else {
+      priceEl.classList.remove("price-loading");
+    }
+  });
 }
 
 function showToast(msg, isError = false) {
@@ -310,6 +325,7 @@ function updatePlanRatesFromCloud(plansObj) {
     }
   };
 
+  showPriceLoadingState(false);
   switchPlanCategory(currentPlanMode);
   updateInquiryDropdownOptions(plansObj);
 }
@@ -393,7 +409,6 @@ function handleInquirySubmit(e) {
   }, 600);
 }
 
-// --- HELPER TO DISPLAY IN-LINE LOGIN ERROR ---
 function setMemberLoginError(message) {
   const errorEl = document.getElementById("member-login-error");
   if (errorEl) {
@@ -401,7 +416,6 @@ function setMemberLoginError(message) {
   }
 }
 
-// --- MEMBER AUTH & DATA ENGINE ---
 async function handleMemberLogin() {
   dismissMobileKeyboard();
   setMemberLoginError("");
@@ -472,6 +486,7 @@ async function fetchData(silent = false) {
 
     if (State.activeView === "member") renderMember();
   } catch (err) {
+    showPriceLoadingState(false);
     if (!silent) showToast("Connection failed. Check network.", true);
   } finally {
     State.isFetching = false;
