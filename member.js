@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupFaqAccordion();
   startSync();
   
-  // Show the inline text/dot loader on pricing cards without a blocking overlay spinner
+  // Apply "Loading..." text placeholder immediately on startup
   showPriceLoadingState(true);
   fetchData(true); // Runs silently in the background
 
@@ -172,7 +172,7 @@ function formatDate(dateInput) {
   return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-// Aesthetic Price Loading State Engine
+// Applies "Loading..." placeholder text to all pricing cards across tabs
 function showPriceLoadingState(isLoading) {
   ["1m", "3m", "6m", "12m"].forEach(tier => {
     const priceEl = document.getElementById(`price-${tier}`);
@@ -180,7 +180,7 @@ function showPriceLoadingState(isLoading) {
     
     if (isLoading) {
       priceEl.classList.add("price-loading");
-      priceEl.innerHTML = `<span style="font-size:12px; color:var(--primary); font-weight:700;">Loading...</span>`;
+      priceEl.innerHTML = `<span style="font-size:14px; color:var(--text-muted); font-weight:700;">Loading...</span>`;
     } else {
       priceEl.classList.remove("price-loading");
     }
@@ -419,7 +419,6 @@ async function handleMemberLogin() {
     return;
   }
 
-  // Fetch data silently without showing any blocking overlay spinner
   await fetchData(true);
 
   const member = State.members.find(m => 
